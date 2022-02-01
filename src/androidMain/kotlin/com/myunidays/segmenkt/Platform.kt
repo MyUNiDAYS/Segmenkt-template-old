@@ -13,3 +13,5 @@ actual val httpClient = HttpClient(Android.create()) {
         level = LogLevel.ALL
     }
 }
+
+actual val platform = PlatformType.android

@@ -13,11 +13,11 @@ import kotlin.native.concurrent.ThreadLocal
 object Segment {
 
     private val baseUrl = "https://api.segment.io/v1"
-    var writeKey: String? = null
+    var writeKey: WriteKey? = null
 
     private suspend fun makePostRequest(path: String, postBody: Any) {
         httpClient.post<Response>("$baseUrl/$path") {
-            header("Authorization", "Basic ${writeKey!!}")
+            header("Authorization", "Basic ${writeKey!!.keyForPlatform()}")
             contentType(ContentType.Application.Json)
             body = postBody
         }.also {

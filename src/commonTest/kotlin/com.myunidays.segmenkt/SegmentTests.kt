@@ -10,7 +10,11 @@ class SegmentTests {
 
     @BeforeTest
     fun before() {
-        Segment.writeKey = ""
+        Segment.writeKey = WriteKey(
+            android = "",
+            ios = ""
+        )
+
     }
 
     @Test

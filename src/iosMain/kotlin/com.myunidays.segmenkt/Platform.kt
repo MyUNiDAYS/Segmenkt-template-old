@@ -12,3 +12,5 @@ actual val httpClient = HttpClient(Ios.create()) {
         level = LogLevel.ALL
     }
 }
+
+actual val platform = PlatformType.ios
