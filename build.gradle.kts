@@ -11,7 +11,7 @@ version = "0.0.1"
 
 val frameworkName = "segmenkt"
 val ktor_version = "1.6.6"
-val coroutines_version = "1.6.0-native-mt"
+val coroutines_version = "1.5.2-native-mt"
 val serialization_version = "1.3.0"
 
 repositories {
