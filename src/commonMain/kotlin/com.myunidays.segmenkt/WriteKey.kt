@@ -5,9 +5,9 @@ data class WriteKey(
     val ios: String?
 ) {
 
-    fun keyForPlatform(): String = when (platform) {
-        PlatformType.ios -> ios!!
-        PlatformType.android -> android!!
+    fun keyForPlatform(): String? = when (platform) {
+        PlatformType.ios -> ios
+        PlatformType.android -> android
     }
 
 }
