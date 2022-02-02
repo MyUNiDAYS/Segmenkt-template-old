@@ -4,18 +4,22 @@ import com.myunidays.segmenkt.exceptions.FailedSegmentRequestException
 import com.myunidays.segmenkt.exceptions.InvalidRequestDataException
 import com.myunidays.segmenkt.exceptions.MissingKeyException
 import com.myunidays.segmenkt.models.*
+import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 
-private var _segment: Segment = Segment()
+private var _segment: Segment = Segment(httpClient)
 val segment: Segment get() = _segment
 
-class Segment(private val writeKey: WriteKey? = null) {
+class Segment(private val httpClient: HttpClient, private val writeKey: WriteKey? = null) {
 
     companion object {
-        fun initialize(writeKey: WriteKey) {
+        internal fun initialize(httpClient: HttpClient, writeKey: WriteKey) {
             Log.i("Segment Initializing New Key")
-            _segment = Segment(writeKey)
+            _segment = Segment(httpClient, writeKey)
+        }
+        fun initialize(writeKey: WriteKey) {
+            initialize(httpClient, writeKey)
         }
     }
 
@@ -25,7 +29,7 @@ class Segment(private val writeKey: WriteKey? = null) {
         Log.i("makePostRequest for $path and body $postBody")
         if (writeKey?.keyForPlatform() == null) { throw MissingKeyException() }
         httpClient.post<Response>("$baseUrl/$path") {
-            header("Authorization", "Basic ${writeKey!!.keyForPlatform()}")
+            header("Authorization", "Basic ${writeKey.keyForPlatform()}")
             contentType(ContentType.Application.Json)
             body = postBody
         }.also {

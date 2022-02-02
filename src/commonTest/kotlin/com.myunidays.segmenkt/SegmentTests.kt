@@ -4,6 +4,13 @@ import com.myunidays.segmenkt.exceptions.InvalidRequestDataException
 import com.myunidays.segmenkt.exceptions.MissingKeyException
 import com.myunidays.segmenkt.models.Identify
 import com.myunidays.segmenkt.models.Track
+import io.ktor.client.*
+import io.ktor.client.engine.mock.*
+import io.ktor.client.features.json.*
+import io.ktor.client.features.json.serializer.*
+import io.ktor.client.features.logging.*
+import io.ktor.http.*
+import io.ktor.utils.io.*
 import kotlinx.coroutines.runBlocking
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -13,7 +20,19 @@ class SegmentTests {
 
     @BeforeTest
     fun before() {
-        Segment.initialize(WriteKey(
+        val mockEngine = HttpClient(MockEngine {
+            respond(
+                content = ByteReadChannel("""{"success":true}"""),
+                status = HttpStatusCode.OK,
+                headers = headersOf(HttpHeaders.ContentType, "application/json")
+            )
+        }) {
+            install(JsonFeature) { serializer = KotlinxSerializer() }
+            install(Logging) { level = LogLevel.ALL }
+        }
+        Segment.initialize(
+            mockEngine,
+            WriteKey(
             android = "1",
             ios = "2"
         ))
