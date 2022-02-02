@@ -9,7 +9,8 @@ data class Track(
     val anonymousId: String? = null,
     val event: String,
     val properties: Map<String, String>? = null,
-    val timestamp: String? = null
+    val timestamp: String? = null,
+    val context: Context? = null,
 ) {
     @Transient
     val isValid: Boolean = userId != null || anonymousId != null

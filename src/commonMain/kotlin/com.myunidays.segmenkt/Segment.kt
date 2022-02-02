@@ -1,28 +1,36 @@
 package com.myunidays.segmenkt
 
-import com.myunidays.segmenkt.exceptions.FailedSegmentRequest
-import com.myunidays.segmenkt.exceptions.InvalidRequestData
-import com.myunidays.segmenkt.models.Identify
-import com.myunidays.segmenkt.models.Response
-import com.myunidays.segmenkt.models.Track
+import com.myunidays.segmenkt.exceptions.FailedSegmentRequestException
+import com.myunidays.segmenkt.exceptions.InvalidRequestDataException
+import com.myunidays.segmenkt.exceptions.MissingKeyException
+import com.myunidays.segmenkt.models.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import kotlin.native.concurrent.ThreadLocal
 
-@ThreadLocal
-object Segment {
+private var _segment: Segment = Segment()
+val segment: Segment get() = _segment
+
+class Segment(private val writeKey: WriteKey? = null) {
+
+    companion object {
+        fun initialize(writeKey: WriteKey) {
+            Log.i("Segment Initializing New Key")
+            _segment = Segment(writeKey)
+        }
+    }
 
     private val baseUrl = "https://api.segment.io/v1"
-    var writeKey: WriteKey? = null
 
     private suspend fun makePostRequest(path: String, postBody: Any) {
+        Log.i("makePostRequest for $path and body $postBody")
+        if (writeKey?.keyForPlatform() == null) { throw MissingKeyException() }
         httpClient.post<Response>("$baseUrl/$path") {
             header("Authorization", "Basic ${writeKey!!.keyForPlatform()}")
             contentType(ContentType.Application.Json)
             body = postBody
         }.also {
-            if(!it.success) {
-                throw FailedSegmentRequest("Segment request failed")
+            if (!it.success) {
+                throw FailedSegmentRequestException("Segment request failed")
             }
         }
     }
@@ -32,8 +40,9 @@ object Segment {
     }
 
     suspend fun track(event: Track) {
-        if (!event.isValid) { throw InvalidRequestData("Invalid tracking event") }
-        makePostRequest("track", event)
+        val eventWithContext = event.copy(context = Context(library = library, os = operatingSystem))
+        if (!eventWithContext.isValid) { throw InvalidRequestDataException("Invalid tracking event, please set userid or anomid") }
+        makePostRequest("track", eventWithContext)
     }
 
     suspend fun page() { TODO() }

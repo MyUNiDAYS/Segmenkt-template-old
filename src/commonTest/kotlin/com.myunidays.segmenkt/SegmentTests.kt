@@ -10,11 +10,10 @@ class SegmentTests {
 
     @BeforeTest
     fun before() {
-        Segment.writeKey = WriteKey(
+        Segment.initialize(WriteKey(
             android = "",
             ios = ""
-        )
-
+        ))
     }
 
     @Test
@@ -22,7 +21,7 @@ class SegmentTests {
         val identify = Identify(
             userId = "2"
         )
-        Segment.identify(identify)
+        segment.identify(identify)
     }
 
     @Test
@@ -31,6 +30,6 @@ class SegmentTests {
             userId = "2",
             event = "Test"
         )
-        Segment.track(event)
+        segment.track(event)
     }
 }
