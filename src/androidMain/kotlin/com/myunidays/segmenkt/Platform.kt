@@ -1,6 +1,7 @@
 package com.myunidays.segmenkt
 
 import android.os.Build
+import com.myunidays.segmenkt.models.App
 import com.myunidays.segmenkt.models.OperatingSystem
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
@@ -22,4 +23,12 @@ actual val platform = PlatformType.android
 actual val operatingSystem = OperatingSystem(
     name = "Android",
     version = "${Build.VERSION.SDK_INT}"
+)
+
+// need to think of a clever way to get the context.
+actual val app = App(
+    name = "",
+    namespace = "",
+    version = "",
+    build = ""
 )

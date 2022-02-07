@@ -44,7 +44,7 @@ class Segment(private val httpClient: HttpClient, private val writeKey: WriteKey
     }
 
     suspend fun track(event: Track) {
-        val eventWithContext = event.copy(context = Context(library = library, os = operatingSystem))
+        val eventWithContext = event.copy(context = Context(library = library, os = operatingSystem, app = app))
         if (!eventWithContext.isValid) { throw InvalidRequestDataException("Invalid tracking event, please set userid or anomid") }
         makePostRequest("track", eventWithContext)
     }

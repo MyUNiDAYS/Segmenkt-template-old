@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Context(
     val active: Boolean? = null,
-    val app: Map<String, String>? = null,
+    val app: App? = null,
     val campaign: Map<String, String>? = null,
     val device: Map<String, String>? = null,
     val ip: String? = null,

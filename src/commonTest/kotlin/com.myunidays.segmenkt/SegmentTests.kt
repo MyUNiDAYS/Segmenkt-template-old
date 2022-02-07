@@ -73,6 +73,7 @@ class SegmentTests {
             userId = "2",
             event = "Test"
         )
+        println(event)
         segment.track(event)
     }
 }
