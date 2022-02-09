@@ -28,11 +28,13 @@ class SegmentTests {
             )
         }) {
             install(JsonFeature) { serializer = KotlinxSerializer() }
-            install(Logging) { level = LogLevel.ALL }
+            install(Logging) {
+                level = LogLevel.ALL
+            }
         }
         Segment.initialize(
-            mockEngine,
-            WriteKey(
+            httpClient = mockEngine,
+            writeKey = WriteKey(
             android = "1",
             ios = "2"
         ))
@@ -73,7 +75,6 @@ class SegmentTests {
             userId = "2",
             event = "Test"
         )
-        println(event)
         segment.track(event)
     }
 }

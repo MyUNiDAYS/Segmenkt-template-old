@@ -8,25 +8,30 @@ import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 
-private var _segment: Segment = Segment(httpClient)
+private var _segment: Segment = Segment(httpClient = httpClient)
 val segment: Segment get() = _segment
 
-class Segment(private val httpClient: HttpClient, private val writeKey: WriteKey? = null) {
+class Segment(private val context: ApplicationContext? = null, private val httpClient: HttpClient, private val writeKey: WriteKey? = null) {
 
     companion object {
-        internal fun initialize(httpClient: HttpClient, writeKey: WriteKey) {
+        internal fun initialize(context: ApplicationContext? = null, httpClient: HttpClient, writeKey: WriteKey) {
             Log.i("Segment Initializing New Key")
-            _segment = Segment(httpClient, writeKey)
+            _segment = Segment(context, httpClient, writeKey)
         }
         fun initialize(writeKey: WriteKey) {
-            initialize(httpClient, writeKey)
+            initialize(httpClient = httpClient, writeKey = writeKey)
         }
     }
 
     private val baseUrl = "https://api.segment.io/v1"
 
+    init {
+        Log()   // initialise logging
+    }
+
     private suspend fun makePostRequest(path: String, postBody: Any) {
         Log.i("makePostRequest for $path and body $postBody")
+        println("makePostRequest for $path and body $postBody")
         if (writeKey?.keyForPlatform() == null) { throw MissingKeyException() }
         httpClient.post<Response>("$baseUrl/$path") {
             header("Authorization", "Basic ${writeKey.keyForPlatform()}")
@@ -44,7 +49,7 @@ class Segment(private val httpClient: HttpClient, private val writeKey: WriteKey
     }
 
     suspend fun track(event: Track) {
-        val eventWithContext = event.copy(context = Context(library = library, os = operatingSystem, app = app))
+        val eventWithContext = event.copy(context = Context(library = library, os = operatingSystem, app = App.create(context)))
         if (!eventWithContext.isValid) { throw InvalidRequestDataException("Invalid tracking event, please set userid or anomid") }
         makePostRequest("track", eventWithContext)
     }
