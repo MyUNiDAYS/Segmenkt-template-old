@@ -1,6 +1,8 @@
 package com.myunidays.segmenkt
 
-import android.app.Application
+import kotlinx.serialization.json.JsonObject
+
+/*import android.app.Application
 import android.os.Build
 import com.myunidays.segmenkt.models.OperatingSystem
 import io.ktor.client.*
@@ -26,3 +28,4 @@ actual val operatingSystem = OperatingSystem(
 )
 
 actual typealias ApplicationContext = Application
+*/

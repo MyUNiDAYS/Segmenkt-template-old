@@ -1,6 +1,6 @@
 package com.myunidays.segmenkt
 
-data class WriteKey(
+/*data class WriteKey(
     val android: String?,
     val ios: String?
 ) {
@@ -9,5 +9,5 @@ data class WriteKey(
         PlatformType.ios -> ios
         PlatformType.android -> android
     }
-
 }
+*/

@@ -1,9 +1,13 @@
+
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
+
 plugins {
     kotlin("multiplatform") version "1.6.0"
     kotlin("plugin.serialization") version "1.6.0"
     id("com.android.library") version "7.1.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
     `maven-publish`
+    kotlin("native.cocoapods") version "1.6.0"
 }
 
 group = "com.myunidays"
@@ -13,6 +17,8 @@ val frameworkName = "segmenkt"
 val ktor_version = "1.6.6"
 val coroutines_version = "1.5.2-native-mt"
 val serialization_version = "1.3.0"
+val napier_version = "2.3.0"
+val koin_version = "3.1.5"
 
 repositories {
     google()
@@ -23,33 +29,36 @@ kotlin {
     android {
         publishAllLibraryVariants()
     }
+
+    val xcf = XCFramework()
+
     iosSimulatorArm64 {
-        binaries.framework(frameworkName)
+        binaries.framework {
+            baseName = frameworkName
+            xcf.add(this)
+        }
     }
     iosArm64("ios") {
-        binaries.framework(frameworkName)
+        binaries.framework {
+            baseName = frameworkName
+            xcf.add(this)
+        }
     }
+
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("io.github.aakira:napier:2.3.0")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serialization_version")
-                implementation("io.ktor:ktor-client-core:$ktor_version")
-                implementation("io.ktor:ktor-client-logging:$ktor_version")
-                implementation("io.ktor:ktor-client-serialization:$ktor_version")
-                implementation("io.ktor:ktor-client-json:$ktor_version")
+                implementation("io.github.aakira:napier:$napier_version")
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
-                implementation("io.ktor:ktor-client-mock:$ktor_version")
             }
         }
         val androidMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-android:$ktor_version")
+                api("com.segment.analytics.kotlin:android:1.4.2")
             }
         }
         val androidTest by getting {
@@ -57,14 +66,29 @@ kotlin {
                 implementation("junit:junit:4.13.2")
             }
         }
-        val iosMain by getting {
-            dependencies {
-                implementation("io.ktor:ktor-client-ios:$ktor_version")
-            }
-        }
+        val iosMain by getting {}
         val iosSimulatorArm64Main by getting
         iosSimulatorArm64Main.dependsOn(iosMain)
         val iosTest by getting
+        val iosSimulatorArm64Test by getting
+        iosSimulatorArm64Test.dependsOn(iosTest)
+    }
+
+}
+
+kotlin {
+    cocoapods {
+        ios.deploymentTarget = "10.0"
+        summary = "Some description for a Kotlin/Native module"
+        homepage = "Link to a Kotlin/Native module homepage"
+
+        pod("Analytics") {
+            version = "~> 4.1.6"
+            moduleName = "Segment"
+            source = git("https://github.com/Reedyuk/analytics-ios.git") {
+                branch = "master"
+            }
+        }
     }
 }
 
@@ -81,34 +105,6 @@ android {
     }
     testOptions {
         unitTests.isReturnDefaultValues = true
-    }
-}
-
-kotlin {
-    tasks {
-        val capitalizedName = frameworkName.capitalize()
-        register("copyIosFrameworkIntoUniversalFramework", Copy::class) {
-            from(file("$buildDir/bin/ios/${frameworkName}ReleaseFramework/$frameworkName.framework"))
-            into(file("$buildDir/universal/$frameworkName.xcframework/ios-arm64/$frameworkName.framework"))
-        }
-        register("copySimulatorFrameworkIntoUniversalFramework", Copy::class) {
-            from(file("$buildDir/bin/iosSimulatorArm64/${frameworkName}ReleaseFramework/$frameworkName.framework"))
-            into(file("$buildDir/universal/$frameworkName.xcframework/ios-arm64_x86_64-simulator/$frameworkName.framework"))
-        }
-        register("copyPlistIntoUniversalFramework", Copy::class) {
-            from(file("${project.projectDir}/Info.plist"))
-            into(file("$buildDir/universal/$frameworkName.xcframework"))
-        }
-        register("copyFrameworksIntoUniversalFramework") {
-            mustRunAfter("link${capitalizedName}Ios", "link${capitalizedName}IosSimulatorArm64")
-            mustRunAfter("link${capitalizedName}Ios")
-            dependsOn("copyIosFrameworkIntoUniversalFramework", "copySimulatorFrameworkIntoUniversalFramework", "copyPlistIntoUniversalFramework")
-        }
-        register("makeUniversalFramework") {
-            dependsOn("link${capitalizedName}Ios")
-            dependsOn("link${capitalizedName}IosSimulatorArm64")
-            dependsOn("copyFrameworksIntoUniversalFramework")
-        }
     }
 }
 

@@ -1,6 +1,6 @@
 package com.myunidays.segmenkt.models
 
-import kotlinx.serialization.Serializable
+/*import kotlinx.serialization.Serializable
 
 @Serializable
 data class Context(
@@ -21,4 +21,4 @@ data class Context(
     val groupId: String? = null,
     val traits: Map<String, String>? = null,
     val userAgent: String? = null
-)
+)*/

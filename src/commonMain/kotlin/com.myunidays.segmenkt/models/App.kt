@@ -1,6 +1,6 @@
 package com.myunidays.segmenkt.models
 
-import com.myunidays.segmenkt.ApplicationContext
+/*import com.myunidays.segmenkt.ApplicationContext
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -11,4 +11,4 @@ data class App(
     val build: String?
 )
 
-expect fun App.Companion.create(context: ApplicationContext?): App?
+expect fun App.Companion.create(context: ApplicationContext?): App?*/

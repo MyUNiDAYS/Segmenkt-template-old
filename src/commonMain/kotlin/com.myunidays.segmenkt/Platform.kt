@@ -1,9 +1,6 @@
 package com.myunidays.segmenkt
 
-import com.myunidays.segmenkt.models.OperatingSystem
-import io.ktor.client.*
-
-expect val httpClient: HttpClient
+/*import com.myunidays.segmenkt.models.OperatingSystem
 
 expect val platform: PlatformType
 
@@ -14,4 +11,4 @@ enum class PlatformType {
     android
 }
 
-expect class ApplicationContext
+expect class ApplicationContext*/

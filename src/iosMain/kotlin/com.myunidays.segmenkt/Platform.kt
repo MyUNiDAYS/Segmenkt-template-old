@@ -1,13 +1,13 @@
 package com.myunidays.segmenkt
 
-import com.myunidays.segmenkt.models.OperatingSystem
-import io.github.aakira.napier.Napier
+/*import com.myunidays.segmenkt.models.OperatingSystem
 import io.ktor.client.*
 import io.ktor.client.engine.ios.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.features.logging.*
 import platform.UIKit.UIDevice
+import cocoapods.Analytics.SEGAnalyticsConfiguration
 
 actual val httpClient = HttpClient(Ios.create()) {
     install(JsonFeature) {
@@ -26,3 +26,5 @@ actual val operatingSystem = OperatingSystem(
 )
 
 actual typealias ApplicationContext = Any
+
+val configuration = cocoapods.Analytics.SEGAnalyticsConfiguration.configurationWithWriteKey("")*/
