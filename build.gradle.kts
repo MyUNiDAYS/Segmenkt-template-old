@@ -32,12 +32,12 @@ kotlin {
 
     val xcf = XCFramework()
 
-//    iosSimulatorArm64 {
-//        binaries.framework {
-//            baseName = frameworkName
-//            xcf.add(this)
-//        }
-//    }
+    iosSimulatorArm64 {
+        binaries.framework {
+            baseName = frameworkName
+            xcf.add(this)
+        }
+    }
     iosArm64("ios") {
         binaries.framework {
             baseName = frameworkName
@@ -67,11 +67,11 @@ kotlin {
             }
         }
         val iosMain by getting {}
-//        val iosSimulatorArm64Main by getting
-//        iosSimulatorArm64Main.dependsOn(iosMain)
+        val iosSimulatorArm64Main by getting
+        iosSimulatorArm64Main.dependsOn(iosMain)
         val iosTest by getting
-//        val iosSimulatorArm64Test by getting
-//        iosSimulatorArm64Test.dependsOn(iosTest)
+        val iosSimulatorArm64Test by getting
+        iosSimulatorArm64Test.dependsOn(iosTest)
     }
 
 }
@@ -81,7 +81,7 @@ kotlin {
         ios.deploymentTarget = "10.0"
         summary = "Some description for a Kotlin/Native module"
         homepage = "Link to a Kotlin/Native module homepage"
-
+        framework {  }
         pod("Analytics") {
             version = "~> 4.1.6"
             moduleName = "Segment"
