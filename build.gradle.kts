@@ -81,7 +81,7 @@ kotlin {
         ios.deploymentTarget = "10.0"
         summary = "Some description for a Kotlin/Native module"
         homepage = "Link to a Kotlin/Native module homepage"
-
+        framework {  }
         pod("Analytics") {
             version = "~> 4.1.6"
             moduleName = "Segment"
