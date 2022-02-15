@@ -18,16 +18,14 @@ expect class Configuration {
     fun isValid(): Boolean*/
 }
 
-expect fun Config(writeKey: String, context: Any? = null): Configuration
+expect fun Configuration(writeKey: WriteKey, context: Any? = null): Configuration
+expect fun setupWithConfiguration(configuration: Configuration): Analytics
 
 expect class Analytics
 
 expect fun Analytics.track(name: String, properties: Map<Any?, *>? = null)
-
 expect fun Analytics.identify(userId: String, traits: Map<Any?, *>? = null)
-
 expect fun Analytics.screen(screenTitle: String, properties: Map<Any?, *>? = null, category: String = "")
-
 expect fun Analytics.group(groupId: String, traits: Map<Any?, *>? = null)
 
-expect fun setupWithConfiguration(configuration: Configuration): Analytics
+expect fun Analytics.shared(context: Any?): Analytics

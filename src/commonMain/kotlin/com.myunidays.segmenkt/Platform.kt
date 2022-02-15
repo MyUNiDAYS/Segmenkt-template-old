@@ -1,14 +1,14 @@
 package com.myunidays.segmenkt
 
-/*import com.myunidays.segmenkt.models.OperatingSystem
+//import com.myunidays.segmenkt.models.OperatingSystem
 
 expect val platform: PlatformType
-
-expect val operatingSystem: OperatingSystem
 
 enum class PlatformType {
     ios,
     android
 }
+/*
+expect val operatingSystem: OperatingSystem
 
 expect class ApplicationContext*/

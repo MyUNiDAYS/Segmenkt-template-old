@@ -1,14 +1,23 @@
 package com.myunidays.segmenkt
 
-actual typealias Configuration = com.segment.analytics.kotlin.core.Configuration
+import android.content.Context
+import java.util.concurrent.TimeUnit
 
-actual fun Config(writeKey: String, context: Any?): Configuration {
-    return com.segment.analytics.kotlin.core.compat.ConfigurationBuilder(writeKey)
-        .setApplication(context)
+actual typealias Configuration = com.myunidays.segmenkt.models.Configuration
+
+actual fun Configuration(writeKey: WriteKey, context: Any?) =
+    com.myunidays.segmenkt.models.Configuration(writeKey.keyForPlatform(), context as Context)
+
+actual fun setupWithConfiguration(configuration: Configuration): Analytics {
+    val analytics = com.segment.analytics.Analytics.Builder(configuration.context, configuration.writeKey)
+        .flushInterval(1, TimeUnit.SECONDS)
+        .recordScreenViews()
         .build()
+    com.segment.analytics.Analytics.setSingletonInstance(analytics)
+    return analytics
 }
 
-actual typealias Analytics = com.segment.analytics.kotlin.core.Analytics
+actual typealias Analytics = com.segment.analytics.Analytics
 
 actual fun Analytics.track(name: String, properties: Map<Any?, *>?) {
     track(name, properties)
@@ -26,6 +35,5 @@ actual fun Analytics.group(groupId: String, traits: Map<Any?, *>?) {
     group(groupId, traits)
 }
 
-actual fun setupWithConfiguration(configuration: Configuration): Analytics {
-    return com.segment.analytics.kotlin.core.Analytics(configuration)
-}
+actual fun Analytics.shared(context: Any?) = Analytics.with(context as Context?)
+

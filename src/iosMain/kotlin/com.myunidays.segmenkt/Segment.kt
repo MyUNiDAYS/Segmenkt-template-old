@@ -5,8 +5,13 @@ import cocoapods.Analytics.SEGAnalyticsConfiguration
 
 actual typealias Configuration = SEGAnalyticsConfiguration
 
-actual fun Config(writeKey: String, context: Any?): Configuration {
-    return SEGAnalyticsConfiguration.configurationWithWriteKey(writeKey)
+actual fun Configuration(writeKey: WriteKey, context: Any?): Configuration {
+    return SEGAnalyticsConfiguration.configurationWithWriteKey(writeKey.keyForPlatform())
+}
+
+actual fun setupWithConfiguration(configuration: Configuration): Analytics {
+    SEGAnalytics.setupWithConfiguration(configuration)
+    return SEGAnalytics.sharedAnalytics()
 }
 
 actual typealias Analytics = SEGAnalytics
@@ -27,11 +32,4 @@ actual fun Analytics.group(groupId: String, traits: Map<Any?, *>?) {
     group(groupId, traits)
 }
 
-actual fun setupWithConfiguration(configuration: Configuration): Analytics {
-    SEGAnalytics.setupWithConfiguration(configuration)
-    return SEGAnalytics.sharedAnalytics()
-}
-
-fun Analytics.shared(): Analytics {
-    return SEGAnalytics.sharedAnalytics()
-}
+actual fun Analytics.shared(context: Any?) = SEGAnalytics.sharedAnalytics()

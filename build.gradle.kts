@@ -32,12 +32,12 @@ kotlin {
 
     val xcf = XCFramework()
 
-    iosSimulatorArm64 {
-        binaries.framework {
-            baseName = frameworkName
-            xcf.add(this)
-        }
-    }
+//    iosSimulatorArm64 {
+//        binaries.framework {
+//            baseName = frameworkName
+//            xcf.add(this)
+//        }
+//    }
     iosArm64("ios") {
         binaries.framework {
             baseName = frameworkName
@@ -58,7 +58,7 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                api("com.segment.analytics.kotlin:android:1.4.2")
+                api("com.segment.analytics.android:analytics:4.10.3")
             }
         }
         val androidTest by getting {
@@ -67,11 +67,11 @@ kotlin {
             }
         }
         val iosMain by getting {}
-        val iosSimulatorArm64Main by getting
-        iosSimulatorArm64Main.dependsOn(iosMain)
+//        val iosSimulatorArm64Main by getting
+//        iosSimulatorArm64Main.dependsOn(iosMain)
         val iosTest by getting
-        val iosSimulatorArm64Test by getting
-        iosSimulatorArm64Test.dependsOn(iosTest)
+//        val iosSimulatorArm64Test by getting
+//        iosSimulatorArm64Test.dependsOn(iosTest)
     }
 
 }
