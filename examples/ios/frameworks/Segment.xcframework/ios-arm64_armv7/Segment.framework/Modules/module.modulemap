@@ -1,0 +1,6 @@
+framework module Segment {
+  umbrella header "Segment.h"
+
+  export *
+  module * { export * }
+}
