@@ -1,39 +1,52 @@
 package com.myunidays.segmenkt
 
 import android.content.Context
+import com.segment.analytics.Properties
+import com.segment.analytics.Traits
 import java.util.concurrent.TimeUnit
 
-actual typealias Configuration = com.myunidays.segmenkt.models.Configuration
+actual class Analytics internal constructor(val android: com.segment.analytics.Analytics) {
 
-actual fun Configuration(writeKey: WriteKey, context: Any?) =
-    com.myunidays.segmenkt.models.Configuration(writeKey.keyForPlatform(), context as Context)
+    actual companion object {
+        actual fun setupWithConfiguration(configuration: Configuration): Analytics {
+            val analytics = com.segment.analytics.Analytics.Builder(configuration.application as Context, configuration.writeKey)
+                .flushInterval(1, TimeUnit.SECONDS)
+                .build()
+            com.segment.analytics.Analytics.setSingletonInstance(analytics)
+            return Analytics(analytics)
+        }
+        actual fun shared(context: Any?): Analytics =
+            Analytics(com.segment.analytics.Analytics.with(context as? Context))
+    }
 
-actual fun setupWithConfiguration(configuration: Configuration): Analytics {
-    val analytics = com.segment.analytics.Analytics.Builder(configuration.context, configuration.writeKey)
-        .flushInterval(1, TimeUnit.SECONDS)
-        .recordScreenViews()
-        .build()
-    com.segment.analytics.Analytics.setSingletonInstance(analytics)
-    return analytics
+    actual fun track(name: String, properties: Map<Any?, *>?) =
+        android.track(name, Properties().apply {
+            properties?.forEach { property ->
+                (property.key as? String)?.let { putValue(it, property.value) }
+            }
+        })
+
+    actual fun identify(userId: String, traits: Map<Any?, *>?) =
+        android.identify(userId, Traits().apply {
+            traits?.forEach { trait ->
+                (trait.key as? String)?.let { putValue(it, trait.value) }
+            }
+        }, null)
+
+    actual fun screen(
+        screenTitle: String,
+        properties: Map<Any?, *>?
+    ) = android.screen(screenTitle, Properties().apply {
+        properties?.forEach { property ->
+            (property.key as? String)?.let { putValue(it, property.value) }
+        }
+    })
+
+    actual fun group(groupId: String, traits: Map<Any?, *>?) =
+        android.group(groupId, Traits().apply {
+            traits?.forEach { trait ->
+                (trait.key as? String)?.let { putValue(it, trait.value) }
+            }
+        })
+
 }
-
-actual typealias Analytics = com.segment.analytics.Analytics
-
-actual fun Analytics.track(name: String, properties: Map<Any?, *>?) {
-    track(name, properties)
-}
-
-actual fun Analytics.identify(userId: String, traits: Map<Any?, *>?) {
-    identify(userId, traits)
-}
-
-actual fun Analytics.screen(screenTitle: String, properties: Map<Any?, *>?, category: String) {
-    screen(screenTitle, properties, category)
-}
-
-actual fun Analytics.group(groupId: String, traits: Map<Any?, *>?) {
-    group(groupId, traits)
-}
-
-actual fun Analytics.shared(context: Any?) = Analytics.with(context as Context?)
-

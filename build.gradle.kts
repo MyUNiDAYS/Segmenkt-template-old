@@ -31,7 +31,6 @@ kotlin {
     }
 
     val xcf = XCFramework()
-
     iosSimulatorArm64 {
         binaries.framework {
             baseName = frameworkName

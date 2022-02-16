@@ -1,35 +1,28 @@
 package com.myunidays.segmenkt
 
-import cocoapods.Analytics.SEGAnalytics
-import cocoapods.Analytics.SEGAnalyticsConfiguration
+actual class Analytics internal constructor(val ios: cocoapods.Analytics.SEGAnalytics) {
 
-actual typealias Configuration = SEGAnalyticsConfiguration
+    actual companion object {
+        actual fun setupWithConfiguration(configuration: Configuration): Analytics {
+            val config = cocoapods.Analytics.SEGAnalyticsConfiguration.configurationWithWriteKey(configuration.writeKey)
+            config.flushInterval = 1.0
+            cocoapods.Analytics.SEGAnalytics.setupWithConfiguration(config)
+            return shared(null)
+        }
 
-actual fun Configuration(writeKey: WriteKey, context: Any?): Configuration {
-    return SEGAnalyticsConfiguration.configurationWithWriteKey(writeKey.keyForPlatform())
+        actual fun shared(context: Any?): Analytics =
+            Analytics(cocoapods.Analytics.SEGAnalytics.sharedAnalytics())
+    }
+
+    actual fun track(name: String, properties: Map<Any?, *>?) = ios.track(name, properties)
+
+    actual fun identify(userId: String, traits: Map<Any?, *>?) = ios.identify(userId, traits)
+
+    actual fun screen(
+        screenTitle: String,
+        properties: Map<Any?, *>?
+    ) = ios.screen(screenTitle, properties)
+
+    actual fun group(groupId: String, traits: Map<Any?, *>?) = ios.group(groupId, traits)
+
 }
-
-actual fun setupWithConfiguration(configuration: Configuration): Analytics {
-    SEGAnalytics.setupWithConfiguration(configuration)
-    return SEGAnalytics.sharedAnalytics()
-}
-
-actual typealias Analytics = SEGAnalytics
-
-actual fun Analytics.track(name: String, properties: Map<Any?, *>?) {
-    track(name, properties)
-}
-
-actual fun Analytics.identify(userId: String, traits: Map<Any?, *>?) {
-    identify(userId, traits)
-}
-
-actual fun Analytics.screen(screenTitle: String, properties: Map<Any?, *>?, category: String) {
-    screen(screenTitle, properties, category)
-}
-
-actual fun Analytics.group(groupId: String, traits: Map<Any?, *>?) {
-    group(groupId, traits)
-}
-
-actual fun Analytics.shared(context: Any?) = SEGAnalytics.sharedAnalytics()

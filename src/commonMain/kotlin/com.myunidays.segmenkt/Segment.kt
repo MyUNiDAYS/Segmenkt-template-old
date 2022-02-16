@@ -1,8 +1,8 @@
 package com.myunidays.segmenkt
 
-expect class Configuration {
-    val writeKey: String
-//    var application: Any?
+data class Configuration(
+    val writeKey: String,
+    val application: Any?
 /*//    val storageProvider: StorageProvider,
     var collectDeviceId: Boolean
     var trackApplicationLifecycleEvents: Boolean
@@ -16,16 +16,21 @@ expect class Configuration {
     var cdnHost: String
 
     fun isValid(): Boolean*/
+) {
+    constructor(writeKey: WriteKey, context: Any? = null) : this(writeKey = writeKey.keyForPlatform(), application = context)
 }
 
-expect fun Configuration(writeKey: WriteKey, context: Any? = null): Configuration
-expect fun setupWithConfiguration(configuration: Configuration): Analytics
+object Segment
 
-expect class Analytics
+expect class Analytics {
 
-expect fun Analytics.track(name: String, properties: Map<Any?, *>? = null)
-expect fun Analytics.identify(userId: String, traits: Map<Any?, *>? = null)
-expect fun Analytics.screen(screenTitle: String, properties: Map<Any?, *>? = null, category: String = "")
-expect fun Analytics.group(groupId: String, traits: Map<Any?, *>? = null)
+    companion object {
+        fun setupWithConfiguration(configuration: Configuration): Analytics
+        fun shared(context: Any? = null): Analytics
+    }
 
-expect fun Analytics.shared(context: Any?): Analytics
+    fun track(name: String, properties: Map<Any?, *>? = null)
+    fun identify(userId: String, traits: Map<Any?, *>? = null)
+    fun screen(screenTitle: String, properties: Map<Any?, *>? = null)
+    fun group(groupId: String, traits: Map<Any?, *>? = null)
+}
