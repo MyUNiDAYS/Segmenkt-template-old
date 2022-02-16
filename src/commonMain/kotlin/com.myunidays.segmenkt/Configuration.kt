@@ -1,4 +1,4 @@
-package com.myunidays.segmenkt.core
+package com.myunidays.segmenkt
 
 /**
  * Configuration that analytics can use
@@ -15,22 +15,21 @@ package com.myunidays.segmenkt.core
  * @property autoAddSegmentDestination automatically add SegmentDestination plugin, defaults to `true`
  * @property apiHost set a default apiHost to which Segment sends events, defaults to `api.segment.io/v1`
  */
-/*data class Configuration(
+
+data class Configuration(
     val writeKey: String,
-    var application: Any? = null,
-    val storageProvider: StorageProvider = ConcreteStorageProvider,
-    var collectDeviceId: Boolean = false,
-    var trackApplicationLifecycleEvents: Boolean = false,
-    var useLifecycleObserver: Boolean = false,
-    var trackDeepLinks: Boolean = false,
-    var flushAt: Int = 20,
-    var flushInterval: Int = 30,
-    val defaultSettings: Settings = Settings(),
-    var autoAddSegmentDestination: Boolean = true,
-    var apiHost: String = DEFAULT_API_HOST,
-    var cdnHost: String = DEFAULT_CDN_HOST
+    val application: Any? = null,
+//    val storageProvider: StorageProvider,
+    val collectDeviceId: Boolean = false,
+    val trackApplicationLifecycleEvents: Boolean = false,
+    val useLifecycleObserver: Boolean = false,
+    val trackDeepLinks: Boolean = false,
+    val flushAt: Int = 20,
+    val flushInterval: Int = 30,
+//    val defaultSettings: Settings = Settings(),
+//    val autoAddSegmentDestination: Boolean = true,
+    val apiHost: String? = null,
+//    val cdnHost: String? = null
 ) {
-    fun isValid(): Boolean {
-        return writeKey.isNotBlank() && application != null
-    }
-}*/
+    constructor(writeKey: WriteKey, context: Any? = null) : this(writeKey = writeKey.keyForPlatform(), application = context)
+}

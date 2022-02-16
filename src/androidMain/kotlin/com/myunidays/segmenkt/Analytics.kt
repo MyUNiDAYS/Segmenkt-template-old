@@ -9,9 +9,15 @@ actual class Analytics internal constructor(val android: com.segment.analytics.A
 
     actual companion object {
         actual fun setupWithConfiguration(configuration: Configuration): Analytics {
-            val analytics = com.segment.analytics.Analytics.Builder(configuration.application as Context, configuration.writeKey)
-                .flushInterval(1, TimeUnit.SECONDS)
-                .build()
+            val analyticsConfig = com.segment.analytics.Analytics.Builder(configuration.application as Context, configuration.writeKey)
+                .collectDeviceId(configuration.collectDeviceId)
+                .experimentalUseNewLifecycleMethods(configuration.useLifecycleObserver)
+                .flushInterval(configuration.flushInterval.toLong(), TimeUnit.SECONDS)
+                .flushQueueSize(configuration.flushAt)
+            if (configuration.trackDeepLinks) analyticsConfig.trackDeepLinks()
+            if (configuration.trackApplicationLifecycleEvents) analyticsConfig.trackApplicationLifecycleEvents()
+            configuration.apiHost?.let { analyticsConfig.defaultApiHost(it) }
+            val analytics = analyticsConfig.build()
             com.segment.analytics.Analytics.setSingletonInstance(analytics)
             return Analytics(analytics)
         }
@@ -19,12 +25,16 @@ actual class Analytics internal constructor(val android: com.segment.analytics.A
             Analytics(com.segment.analytics.Analytics.with(context as? Context))
     }
 
+    init {
+        Log()
+    }
+
     actual fun track(name: String, properties: Map<Any?, *>?) =
         android.track(name, Properties().apply {
             properties?.forEach { property ->
                 (property.key as? String)?.let { putValue(it, property.value) }
             }
-        })
+        }).also { Log.d("Segment: Track $name: $properties") }
 
     actual fun identify(userId: String, traits: Map<Any?, *>?) =
         android.identify(userId, Traits().apply {
@@ -32,6 +42,8 @@ actual class Analytics internal constructor(val android: com.segment.analytics.A
                 (trait.key as? String)?.let { putValue(it, trait.value) }
             }
         }, null)
+        .also { Log.d("Segment: Identify $userId: $traits") }
+
 
     actual fun screen(
         screenTitle: String,
@@ -40,7 +52,7 @@ actual class Analytics internal constructor(val android: com.segment.analytics.A
         properties?.forEach { property ->
             (property.key as? String)?.let { putValue(it, property.value) }
         }
-    })
+    }).also { Log.d("Segment: Screen $screenTitle: $properties") }
 
     actual fun group(groupId: String, traits: Map<Any?, *>?) =
         android.group(groupId, Traits().apply {
@@ -48,5 +60,6 @@ actual class Analytics internal constructor(val android: com.segment.analytics.A
                 (trait.key as? String)?.let { putValue(it, trait.value) }
             }
         })
+    .also { Log.d("Segment: Group $groupId: $traits") }
 
 }
