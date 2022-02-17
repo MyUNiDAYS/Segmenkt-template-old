@@ -54,7 +54,8 @@ No need to define a key for iOS if you are using just Android.
 
 ### Swift
 ```
-
+let segmentConfig = Configuration(writeKey: WriteKey(android: nil, ios: ""), context: nil)
+Analytics.Companion().setupWithConfiguration(configuration: segmentConfig)
 ```
 
 Then when you want to **Track**, **Identify**, **Group**, **Screen**
@@ -69,7 +70,10 @@ Analytics.shared().screen("Cool Screen")
 
 ### Swift
 ```
-
+Analytics.Companion().shared(context: nil).track(name: "Cool Event", properties: nil)
+Analytics.Companion().shared(context: nil).identify(userId: "1", traits: nil)
+Analytics.Companion().shared(context: nil).group(groupId: "1", traits: nil)
+Analytics.Companion().shared(context: nil).screen(screenTitle: "Cool Screen", properties: nil)
 ```
 
 ## Examples
