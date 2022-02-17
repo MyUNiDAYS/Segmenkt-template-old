@@ -110,3 +110,58 @@ android {
 ktlint {
     version.set("0.43.0")
 }
+
+fun SigningExtension.whenRequired(block: () -> Boolean) {
+    setRequired(block)
+}
+
+val javadocJar by tasks.creating(Jar::class) {
+    archiveClassifier.value("javadoc")
+}
+
+publishing {
+    repositories {
+        maven {
+            url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+
+            credentials {
+                username = System.getenv("sonatypeUsernameEnv")
+                password = System.getenv("sonatypePasswordEnv")
+            }
+        }
+    }
+
+    publications.all {
+        this as MavenPublication
+
+        artifact(javadocJar)
+
+        pom {
+            description.set("Segment Wrapper")
+            url.set("https://github.com/Reedyuk/Segmenkt")
+
+            licenses {
+                license {
+                    name.set("MIT License")
+                    url.set("http://opensource.org/licenses/MIT")
+                }
+            }
+
+            developers {
+                developer {
+                    id.set("Reedyuk")
+                    name.set("Andrew Reed")
+                    email.set("andrew.reed@myunidays.com")
+                }
+            }
+
+            scm {
+                url.set("https://github.com/Reedyuk/Segmenkt")
+                connection.set("scm:git:git://git@github.com:Reedyuk/Segmenkt.git")
+                developerConnection.set("scm:git:ssh://git@github.com:Reedyuk/Segmenkt.git")
+            }
+
+        }
+    }
+
+}
