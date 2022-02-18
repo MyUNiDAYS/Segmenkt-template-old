@@ -79,3 +79,9 @@ Analytics.Companion().shared(context: nil).screen(screenTitle: "Cool Screen", pr
 ## Examples
 
 Run the examples from the examples directory for KMM, Android and iOS
+
+## Contributing
+
+This project is set up as an open source project. As such, if there are any suggestions that you have for features, for improving the code itself, or you have come across any problems; you can raise them and/or suggest changes in implementation.
+
+If you are interested in contributing to this codebase, please follow the contributing guidelines. This contains guides on both contributing directly and raising feature requests or bug reports. Please adhere to our code of conduct when doing any of the above.
