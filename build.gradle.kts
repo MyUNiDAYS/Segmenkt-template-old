@@ -37,7 +37,7 @@ kotlin {
             xcf.add(this)
         }
     }
-    iosArm64("ios") {
+    ios {
         binaries.framework {
             baseName = frameworkName
             xcf.add(this)
