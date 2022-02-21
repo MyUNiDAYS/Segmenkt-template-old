@@ -3,7 +3,6 @@ package com.myunidays.segmenkt
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 
-
 class Log {
     companion object {
         fun d(message: String) = Napier.d(message)

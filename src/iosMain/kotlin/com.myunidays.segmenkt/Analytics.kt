@@ -35,5 +35,4 @@ actual class Analytics internal constructor(val ios: cocoapods.Analytics.SEGAnal
 
     actual fun group(groupId: String, traits: Map<Any?, *>?) = ios.group(groupId, traits)
         .also { Log.d("Segment: Group $groupId: $traits") }
-
 }

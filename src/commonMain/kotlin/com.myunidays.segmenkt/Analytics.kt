@@ -1,6 +1,5 @@
 package com.myunidays.segmenkt
 
-
 expect class Analytics {
 
     companion object {

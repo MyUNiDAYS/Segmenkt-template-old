@@ -73,7 +73,6 @@ kotlin {
         val iosSimulatorArm64Test by getting
         iosSimulatorArm64Test.dependsOn(iosTest)
     }
-
 }
 
 kotlin {
@@ -81,7 +80,7 @@ kotlin {
         ios.deploymentTarget = "10.0"
         summary = "Some description for a Kotlin/Native module"
         homepage = "Link to a Kotlin/Native module homepage"
-        framework {  }
+        framework { }
         pod("Analytics") {
             version = "~> 4.1.6"
             moduleName = "Segment"
@@ -161,10 +160,8 @@ publishing {
                 connection.set("scm:git:git://git@github.com:Reedyuk/Segmenkt.git")
                 developerConnection.set("scm:git:ssh://git@github.com:Reedyuk/Segmenkt.git")
             }
-
         }
     }
-
 }
 
 signing {

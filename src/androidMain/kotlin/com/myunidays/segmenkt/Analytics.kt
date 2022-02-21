@@ -30,36 +30,47 @@ actual class Analytics internal constructor(val android: com.segment.analytics.A
     }
 
     actual fun track(name: String, properties: Map<Any?, *>?) =
-        android.track(name, Properties().apply {
-            properties?.forEach { property ->
-                (property.key as? String)?.let { putValue(it, property.value) }
+        android.track(
+            name,
+            Properties().apply {
+                properties?.forEach { property ->
+                    (property.key as? String)?.let { putValue(it, property.value) }
+                }
             }
-        }).also { Log.d("Segment: Track $name: $properties") }
+        ).also { Log.d("Segment: Track $name: $properties") }
 
     actual fun identify(userId: String, traits: Map<Any?, *>?) =
-        android.identify(userId, Traits().apply {
-            traits?.forEach { trait ->
-                (trait.key as? String)?.let { putValue(it, trait.value) }
-            }
-        }, null)
-        .also { Log.d("Segment: Identify $userId: $traits") }
-
+        android.identify(
+            userId,
+            Traits().apply {
+                traits?.forEach { trait ->
+                    (trait.key as? String)?.let { putValue(it, trait.value) }
+                }
+            },
+            null
+        )
+            .also { Log.d("Segment: Identify $userId: $traits") }
 
     actual fun screen(
         screenTitle: String,
         properties: Map<Any?, *>?
-    ) = android.screen(screenTitle, Properties().apply {
-        properties?.forEach { property ->
-            (property.key as? String)?.let { putValue(it, property.value) }
+    ) = android.screen(
+        screenTitle,
+        Properties().apply {
+            properties?.forEach { property ->
+                (property.key as? String)?.let { putValue(it, property.value) }
+            }
         }
-    }).also { Log.d("Segment: Screen $screenTitle: $properties") }
+    ).also { Log.d("Segment: Screen $screenTitle: $properties") }
 
     actual fun group(groupId: String, traits: Map<Any?, *>?) =
-        android.group(groupId, Traits().apply {
-            traits?.forEach { trait ->
-                (trait.key as? String)?.let { putValue(it, trait.value) }
+        android.group(
+            groupId,
+            Traits().apply {
+                traits?.forEach { trait ->
+                    (trait.key as? String)?.let { putValue(it, trait.value) }
+                }
             }
-        })
-    .also { Log.d("Segment: Group $groupId: $traits") }
-
+        )
+            .also { Log.d("Segment: Group $groupId: $traits") }
 }
