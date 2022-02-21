@@ -13,9 +13,9 @@ jobs:
         with:
           java-version: 11
       - name: Run gradle build
-        run: ./Library/gradlew -p ./Library build
+        run: ./gradlew build
       - name: Run publish
-        run: ./Library/gradlew -p ./Library publish
+        run: ./gradlew publish
         env:
           sonatypeUsernameEnv: ${{ secrets.SONATYPEUSERNAME }}
           sonatypePasswordEnv: ${{ secrets.SONATYPEPASSWORD }}
