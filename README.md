@@ -1,6 +1,7 @@
 <h1 align="left">SegmenKT Kotlin SDK <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/reedyuk/segmenkt?style=flat-square"> <a href="https://git.live"><img src="https://img.shields.io/badge/collaborate-on%20gitlive-blueviolet?style=flat-square"></a></h1>
-<br/>
-<br/>
+
+Segment + Kotlin = SegmenKT
+
 The SegmenKT Kotlin SDK is a Kotlin-first SDK for Segment. Its API is similar to the <a href="https://github.com/segmentio/analytics-android/">Segment Android SDK</a> but also supports <b>multiplatform</b> projects, enabling you to use Segment directly from your common source targeting <strong>iOS</strong> and <strong>Android</strong>.
 
 ## Installation

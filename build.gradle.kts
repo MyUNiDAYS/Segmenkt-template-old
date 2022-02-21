@@ -7,6 +7,7 @@ plugins {
     id("com.android.library") version "7.1.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
     `maven-publish`
+    `signing`
     kotlin("native.cocoapods") version "1.6.0"
 }
 
@@ -164,4 +165,12 @@ publishing {
         }
     }
 
+}
+
+signing {
+    whenRequired { gradle.taskGraph.hasTask("publish") }
+    val signingKey: String? by project
+    val signingPassword: String? by project
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign(publishing.publications)
 }
