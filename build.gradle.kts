@@ -137,6 +137,7 @@ publishing {
         artifact(javadocJar)
 
         pom {
+            name.set("Segmenkt")
             description.set("Segment Wrapper")
             url.set("https://github.com/Reedyuk/Segmenkt")
 
