@@ -21,6 +21,8 @@ actual class Analytics internal constructor(val ios: cocoapods.Analytics.SEGAnal
         Log()
     }
 
+    actual fun alias(userId: String) = ios.alias(userId)
+
     actual fun track(name: String, properties: Map<Any?, *>?) = ios.track(name, properties)
         .also { Log.d("Segment: Track $name: $properties") }
 
@@ -35,4 +37,8 @@ actual class Analytics internal constructor(val ios: cocoapods.Analytics.SEGAnal
 
     actual fun group(groupId: String, traits: Map<Any?, *>?) = ios.group(groupId, traits)
         .also { Log.d("Segment: Group $groupId: $traits") }
+
+    actual fun reset() {
+        ios.reset().also { Log.d("Segment: Reset") }
+    }
 }

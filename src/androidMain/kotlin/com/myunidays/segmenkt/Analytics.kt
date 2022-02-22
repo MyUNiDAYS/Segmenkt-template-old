@@ -29,6 +29,8 @@ actual class Analytics internal constructor(val android: com.segment.analytics.A
         Log()
     }
 
+    actual fun alias(userId: String) = android.alias(userId)
+
     actual fun track(name: String, properties: Map<Any?, *>?) =
         android.track(
             name,
@@ -73,4 +75,9 @@ actual class Analytics internal constructor(val android: com.segment.analytics.A
             }
         )
             .also { Log.d("Segment: Group $groupId: $traits") }
+
+    actual fun reset() {
+        android.reset()
+            .also { Log.d("Segment: Reset") }
+    }
 }
