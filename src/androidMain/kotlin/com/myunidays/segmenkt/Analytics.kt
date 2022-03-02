@@ -1,6 +1,7 @@
 package com.myunidays.segmenkt
 
 import android.content.Context
+import com.segment.analytics.Options
 import com.segment.analytics.Properties
 import com.segment.analytics.Traits
 import java.util.concurrent.TimeUnit
@@ -29,19 +30,32 @@ actual class Analytics internal constructor(val android: com.segment.analytics.A
         Log()
     }
 
-    actual fun alias(userId: String) = android.alias(userId)
+    actual fun alias(userId: String, options: Map<Any?, *>?) =
+        android.alias(
+            userId,
+            Options().apply {
+                options?.forEach { property ->
+                    (property.key as? String)?.let { putContext(it, property.value) }
+                }
+            }
+        ).also { Log.d("Segment: Alias $userId $options") }
 
-    actual fun track(name: String, properties: Map<Any?, *>?) =
+    actual fun track(name: String, properties: Map<Any?, *>?, options: Map<Any?, *>?) =
         android.track(
             name,
             Properties().apply {
                 properties?.forEach { property ->
                     (property.key as? String)?.let { putValue(it, property.value) }
                 }
+            },
+            Options().apply {
+                options?.forEach { property ->
+                    (property.key as? String)?.let { putContext(it, property.value) }
+                }
             }
-        ).also { Log.d("Segment: Track $name: $properties") }
+        ).also { Log.d("Segment: Track $name: $properties $options") }
 
-    actual fun identify(userId: String, traits: Map<Any?, *>?) =
+    actual fun identify(userId: String, traits: Map<Any?, *>?, options: Map<Any?, *>?) =
         android.identify(
             userId,
             Traits().apply {
@@ -49,32 +63,46 @@ actual class Analytics internal constructor(val android: com.segment.analytics.A
                     (trait.key as? String)?.let { putValue(it, trait.value) }
                 }
             },
-            null
-        )
-            .also { Log.d("Segment: Identify $userId: $traits") }
+            Options().apply {
+                options?.forEach { property ->
+                    (property.key as? String)?.let { putContext(it, property.value) }
+                }
+            }
+        ).also { Log.d("Segment: Identify $userId: $traits $options") }
 
     actual fun screen(
         screenTitle: String,
-        properties: Map<Any?, *>?
+        properties: Map<Any?, *>?,
+        options: Map<Any?, *>?
     ) = android.screen(
+        null,
         screenTitle,
         Properties().apply {
             properties?.forEach { property ->
                 (property.key as? String)?.let { putValue(it, property.value) }
             }
+        },
+        Options().apply {
+            options?.forEach { property ->
+                (property.key as? String)?.let { putContext(it, property.value) }
+            }
         }
-    ).also { Log.d("Segment: Screen $screenTitle: $properties") }
+    ).also { Log.d("Segment: Screen $screenTitle: $properties $options") }
 
-    actual fun group(groupId: String, traits: Map<Any?, *>?) =
+    actual fun group(groupId: String, traits: Map<Any?, *>?, options: Map<Any?, *>?) =
         android.group(
             groupId,
             Traits().apply {
                 traits?.forEach { trait ->
                     (trait.key as? String)?.let { putValue(it, trait.value) }
                 }
+            },
+            Options().apply {
+                options?.forEach { property ->
+                    (property.key as? String)?.let { putContext(it, property.value) }
+                }
             }
-        )
-            .also { Log.d("Segment: Group $groupId: $traits") }
+        ).also { Log.d("Segment: Group $groupId: $traits") }
 
     actual fun reset() {
         android.reset()
