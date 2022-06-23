@@ -2,23 +2,23 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
-    kotlin("multiplatform") version "1.6.0"
-    kotlin("plugin.serialization") version "1.6.0"
+    kotlin("multiplatform") version "1.6.21"
+    kotlin("plugin.serialization") version "1.6.21"
     id("com.android.library") version "7.1.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
     `maven-publish`
-    `signing`
-    kotlin("native.cocoapods") version "1.6.0"
+    signing
+    kotlin("native.cocoapods") version "1.6.21"
 }
 
 group = "com.myunidays"
-version = "0.0.3"
+version = "0.0.4"
 
 val frameworkName = "segmenkt"
 val ktor_version = "1.6.6"
-val coroutines_version = "1.5.2-native-mt"
+val coroutines_version = "1.6.0-native-mt"
 val serialization_version = "1.3.0"
-val napier_version = "2.3.0"
+val napier_version = "2.6.1"
 val koin_version = "3.1.5"
 
 repositories {
@@ -43,6 +43,18 @@ kotlin {
             baseName = frameworkName
             xcf.add(this)
         }
+    }
+    js(IR) {
+        browser {
+            testTask {
+                testLogging.showStandardStreams = true
+                useKarma {
+                    useChromeHeadless()
+                    useFirefox()
+                }
+            }
+        }
+        binaries.executable()
     }
 
     sourceSets {
@@ -72,6 +84,13 @@ kotlin {
         val iosTest by getting
         val iosSimulatorArm64Test by getting
         iosSimulatorArm64Test.dependsOn(iosTest)
+
+        val jsMain by getting
+        val jsTest by getting {
+            dependencies {
+                implementation(kotlin("test-js"))
+            }
+        }
     }
 }
 

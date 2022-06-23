@@ -9,13 +9,13 @@ The SegmenKT Kotlin SDK is a Kotlin-first SDK for Segment. Its API is similar to
 ### KMM
 
 ```
-implementation("com.myunidays:segmenkt:0.0.1")
+implementation("com.myunidays:segmenkt:0.0.4")
 ```
 
 ### Android
 
 ```
-implementation("com.myunidays:segmenkt-android:0.0.1")
+implementation("com.myunidays:segmenkt-android:0.0.4")
 ```
 
 ### iOS
@@ -31,6 +31,10 @@ build/XCFrameworks/
 ```
 Add the xcframework file to your xcode project, OR you can grab it from this repo in Examples/ios/frameworks/
 
+### JS
+
+At the moment there is a JS target but it is currently filled with TODO's so it's not recommended to be used yet.
+
 #### Important
 
 In order for ios to work you will also need to include the segment framework to your ios project.
@@ -44,7 +48,8 @@ Initialise segment with a config
 val segmentConfig = Configuration(
     writeKey = WriteKey(
         android = "123",
-        ios = "ABC"
+        ios = "ABC",
+        js = "1"
     ),
     context = context
 )
@@ -55,7 +60,7 @@ No need to define a key for iOS if you are using just Android.
 
 ### Swift
 ```
-let segmentConfig = Configuration(writeKey: WriteKey(android: nil, ios: ""), context: nil)
+let segmentConfig = Configuration(writeKey: WriteKey(android: nil, ios: "", js: nil), context: nil)
 Analytics.Companion().setupWithConfiguration(configuration: segmentConfig)
 ```
 
