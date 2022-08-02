@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "com.myunidays"
-version = "0.0.5"
+version = "0.0.6"
 
 val frameworkName = "segmenkt"
 val ktor_version = "1.6.6"
@@ -59,9 +59,6 @@ kotlin {
 
     sourceSets {
         val commonMain by getting {
-            dependencies {
-                implementation("io.github.aakira:napier:$napier_version")
-            }
         }
         val commonTest by getting {
             dependencies {

@@ -26,10 +26,6 @@ actual class Analytics internal constructor(val android: com.segment.analytics.A
             Analytics(com.segment.analytics.Analytics.with(context as? Context))
     }
 
-    init {
-        Log()
-    }
-
     actual fun alias(userId: String, options: Map<Any?, *>?) =
         android.alias(
             userId,
@@ -38,7 +34,7 @@ actual class Analytics internal constructor(val android: com.segment.analytics.A
                     (property.key as? String)?.let { putContext(it, property.value) }
                 }
             }
-        ).also { Log.d("Segment: Alias $userId $options") }
+        )
 
     actual fun track(name: String, properties: Map<Any?, *>?, options: Map<Any?, *>?) =
         android.track(
@@ -53,7 +49,7 @@ actual class Analytics internal constructor(val android: com.segment.analytics.A
                     (property.key as? String)?.let { putContext(it, property.value) }
                 }
             }
-        ).also { Log.d("Segment: Track $name: $properties $options") }
+        )
 
     actual fun identify(userId: String, traits: Map<Any?, *>?, options: Map<Any?, *>?) =
         android.identify(
@@ -68,7 +64,7 @@ actual class Analytics internal constructor(val android: com.segment.analytics.A
                     (property.key as? String)?.let { putContext(it, property.value) }
                 }
             }
-        ).also { Log.d("Segment: Identify $userId: $traits $options") }
+        )
 
     actual fun screen(
         screenTitle: String,
@@ -87,7 +83,7 @@ actual class Analytics internal constructor(val android: com.segment.analytics.A
                 (property.key as? String)?.let { putContext(it, property.value) }
             }
         }
-    ).also { Log.d("Segment: Screen $screenTitle: $properties $options") }
+    )
 
     actual fun group(groupId: String, traits: Map<Any?, *>?, options: Map<Any?, *>?) =
         android.group(
@@ -102,10 +98,9 @@ actual class Analytics internal constructor(val android: com.segment.analytics.A
                     (property.key as? String)?.let { putContext(it, property.value) }
                 }
             }
-        ).also { Log.d("Segment: Group $groupId: $traits") }
+        )
 
     actual fun reset() {
         android.reset()
-            .also { Log.d("Segment: Reset") }
     }
 }

@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'segmenkt'
-    spec.version                  = '0.0.4'
+    spec.version                  = '0.0.6'
     spec.homepage                 = 'Link to a Kotlin/Native module homepage'
     spec.source                   = { :http=> ''}
     spec.authors                  = ''

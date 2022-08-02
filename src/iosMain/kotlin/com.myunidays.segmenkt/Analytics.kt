@@ -17,30 +17,21 @@ actual class Analytics internal constructor(val ios: cocoapods.Analytics.SEGAnal
             Analytics(cocoapods.Analytics.SEGAnalytics.sharedAnalytics())
     }
 
-    init {
-        Log()
-    }
-
     actual fun alias(userId: String, options: Map<Any?, *>?) = ios.alias(userId, options?.let { mapOf("context" to it) })
-        .also { Log.d("Segment: Alias $userId: $options") }
 
     actual fun track(name: String, properties: Map<Any?, *>?, options: Map<Any?, *>?) = ios.track(name, properties, options?.let { mapOf("context" to it) })
-        .also { Log.d("Segment: Track $name: $properties $options") }
 
     actual fun identify(userId: String, traits: Map<Any?, *>?, options: Map<Any?, *>?) = ios.identify(userId, traits, options?.let { mapOf("context" to it) })
-        .also { Log.d("Segment: Identify $userId: $traits $options") }
 
     actual fun screen(
         screenTitle: String,
         properties: Map<Any?, *>?,
         options: Map<Any?, *>?
     ) = ios.screen(screenTitle, properties, options?.let { mapOf("context" to it) })
-        .also { Log.d("Segment: Screen $screenTitle: $properties $options") }
 
     actual fun group(groupId: String, traits: Map<Any?, *>?, options: Map<Any?, *>?) = ios.group(groupId, traits, options?.let { mapOf("context" to it) })
-        .also { Log.d("Segment: Group $groupId: $traits $options") }
 
     actual fun reset() {
-        ios.reset().also { Log.d("Segment: Reset") }
+        ios.reset()
     }
 }
