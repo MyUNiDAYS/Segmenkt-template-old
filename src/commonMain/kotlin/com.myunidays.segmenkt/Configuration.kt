@@ -32,6 +32,6 @@ data class Configuration(
     val apiHost: String? = null,
 //    val cdnHost: String? = null
 ) {
-    constructor(writeKey: WriteKey, tag: String?, context: Any? = null)
-            : this(writeKey = writeKey.keyForPlatform(), tag = tag, application = context)
+    constructor(writeKey: WriteKey, tag: String?, context: Any? = null) :
+        this(writeKey = writeKey.keyForPlatform(), tag = tag, application = context)
 }
