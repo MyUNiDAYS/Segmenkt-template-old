@@ -18,6 +18,7 @@ package com.myunidays.segmenkt
 
 data class Configuration(
     val writeKey: String,
+    val tag: String? = null,
     val application: Any? = null,
 //    val storageProvider: StorageProvider,
     val collectDeviceId: Boolean = false,
@@ -31,5 +32,6 @@ data class Configuration(
     val apiHost: String? = null,
 //    val cdnHost: String? = null
 ) {
-    constructor(writeKey: WriteKey, context: Any? = null) : this(writeKey = writeKey.keyForPlatform(), application = context)
+    constructor(writeKey: WriteKey, tag: String?, context: Any? = null)
+            : this(writeKey = writeKey.keyForPlatform(), tag = tag, application = context)
 }
