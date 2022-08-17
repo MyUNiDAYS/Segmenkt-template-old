@@ -15,6 +15,7 @@ actual class Analytics internal constructor(val android: com.segment.analytics.A
                 .experimentalUseNewLifecycleMethods(configuration.useLifecycleObserver)
                 .flushInterval(configuration.flushInterval.toLong(), TimeUnit.SECONDS)
                 .flushQueueSize(configuration.flushAt)
+                .tag(if (configuration.tag.isNullOrBlank()) configuration.writeKey else configuration.tag + "-" + configuration.writeKey)
             if (configuration.trackDeepLinks) analyticsConfig.trackDeepLinks()
             if (configuration.trackApplicationLifecycleEvents) analyticsConfig.trackApplicationLifecycleEvents()
             configuration.apiHost?.let { analyticsConfig.defaultApiHost(it) }
