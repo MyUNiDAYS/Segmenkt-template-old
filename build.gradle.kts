@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "com.myunidays"
-version = "0.0.7"
+version = "0.0.8"
 
 val frameworkName = "segmenkt"
 val ktor_version = "1.6.6"
